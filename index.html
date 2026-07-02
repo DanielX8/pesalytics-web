@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>document.documentElement.classList.add('js-decrypt');</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d1812" />
@@ -120,40 +121,6 @@
       margin: 0 auto 28px;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--green-lo);
-      border: 1px solid var(--green-rim);
-      color: var(--green);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 5px 13px 5px 10px;
-      border-radius: 100px;
-      margin-bottom: 30px;
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--green);
-      border-radius: 50%;
-      flex-shrink: 0;
-      animation: dot-pulse 2.6s ease-in-out infinite;
-    }
-
-    @keyframes dot-pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .badge-dot { animation: none; }
-    }
-
     h1 {
       font-size: clamp(26px, 5.2vw, 46px);
       font-weight: 800;
@@ -165,6 +132,13 @@
 
     h1 .hl {
       color: var(--green);
+    }
+
+    /* Decrypt-reveal characters: inherit color from context (base ink or .hl green).
+       display:inline (not inline-block) so wrapping text into per-char spans
+       never changes line-height/wrapping versus the original plain text. */
+    .decrypt-char {
+      display: inline;
     }
 
     .subline {
@@ -297,6 +271,15 @@
       line-height: 1.68;
     }
 
+    .feature p a {
+      color: var(--green);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      white-space: nowrap;
+    }
+
+    .feature p a:hover { opacity: 0.8; }
+
     /* ── Footer ────────────────────────────────── */
     footer {
       position: relative;
@@ -319,17 +302,29 @@
 
     /* ── Entrance animations ───────────────────── */
     @media (prefers-reduced-motion: no-preference) {
-      .badge, h1, .subline, .notify-form, .trust {
+      /* Headline and subline reveal via the decrypt script below —
+         no rise/fade, they just appear already mid-scramble. Hidden only
+         when JS is present (see .js-decrypt on <html>, set by an early
+         inline script) so content still shows without JS. */
+      .js-decrypt h1,
+      .js-decrypt .subline {
         opacity: 0;
-        transform: translateY(16px);
-        animation: rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
-      .badge        { animation-delay: 0.06s; }
-      h1            { animation-delay: 0.14s; }
-      .subline      { animation-delay: 0.22s; }
-      .notify-form  { animation-delay: 0.30s; }
-      .trust        { animation-delay: 0.36s; }
+      /* Notify-form + trust line rise in — but only once the decrypt
+         script above them finishes, via the .reveal class it adds. */
+      .js-decrypt .notify-form,
+      .js-decrypt .trust {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      .notify-form.reveal,
+      .trust.reveal {
+        animation: rise-soft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+
+      .trust.reveal { animation-delay: 0.08s; }
 
       .feature {
         opacity: 0;
@@ -342,6 +337,10 @@
       .feature:nth-child(3) { animation-delay: 0.64s; }
 
       @keyframes rise {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes rise-soft {
         to { opacity: 1; transform: translateY(0); }
       }
     }
@@ -407,12 +406,7 @@
 
       <img src="logo.png" alt="Pesalytics app icon" class="hero-icon" />
 
-      <div class="badge" aria-label="Status: Coming soon on Google Play">
-        <span class="badge-dot" aria-hidden="true"></span>
-        Coming soon · Google Play
-      </div>
-
-      <h1>
+      <h1 id="hero-heading">
         M-PESA sends you <span class="hl">40 texts</span><br>a month. Do you know<br>where your money went?
       </h1>
 
@@ -472,7 +466,7 @@
         </div>
         <div>
           <b>Your data stays on your phone</b>
-          <p>Reads SMS locally on your device. Nothing is stored on a server or sent anywhere.</p>
+          <p>Reads SMS locally on your device. Nothing is stored on a server or sent anywhere. <a href="privacy-policy/">Privacy Policy →</a></p>
         </div>
       </div>
 
@@ -493,7 +487,9 @@
 
   <footer>
     &copy; 2026 Pesalytics &nbsp;·&nbsp;
-    <a href="privacy-policy/">Privacy Policy</a>
+    <a href="privacy-policy/">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="terms-of-service/">Terms of Service</a> &nbsp;·&nbsp;
+    <a href="faq/">FAQ</a>
   </footer>
 
   <script type="module">
@@ -909,6 +905,115 @@ void main(){
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+  </script>
+
+  <script>
+  // ── Hero decrypt-reveal ────────────────────────────────
+  // Headline and subline each wrap their characters into spans and reveal
+  // already mid-scramble (no rise/fade — see .js-decrypt rules in <style>),
+  // settling left-to-right, one element after another. Only once both
+  // finish does the notify-form + trust line rise in (softened, no-bounce
+  // easing — see .reveal class rules in <style>).
+  (function decryptHero() {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return; // real content is already visible via CSS, nothing to do
+
+    const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*';
+    const TICK_MS = 34;        // per-character scramble speed
+    const SETTLE_STEP_MS = 18; // stagger between each character's reveal
+
+    function randomGlyph() {
+      return GLYPHS[(Math.random() * GLYPHS.length) | 0];
+    }
+
+    // Walk an element's child nodes, splitting every character into its own
+    // <span class="decrypt-char">, preserving element boundaries (so e.g.
+    // the h1's .hl span keeps its green color, cascaded onto the spans
+    // inside it), and leaving <br> and whitespace (space/NBSP/newlines/tabs)
+    // untouched.
+    function splitIntoChars(container) {
+      const chars = [];
+
+      function walk(node) {
+        Array.from(node.childNodes).forEach((child) => {
+          if (child.nodeType === Node.TEXT_NODE) {
+            const text = child.textContent;
+            const frag = document.createDocumentFragment();
+            for (const ch of text) {
+              if (/\s/.test(ch) || ch.charCodeAt(0) === 160) {
+                frag.appendChild(document.createTextNode(ch));
+                continue;
+              }
+              const span = document.createElement('span');
+              span.className = 'decrypt-char';
+              span.textContent = ch;
+              frag.appendChild(span);
+              chars.push({ span, final: ch });
+            }
+            node.replaceChild(frag, child);
+          } else if (child.nodeName === 'BR') {
+            // leave line breaks untouched
+          } else {
+            // e.g. .hl — recurse; wrapping characters as spans inside a
+            // child element preserves that element's own styling
+            walk(child);
+          }
+        });
+      }
+
+      walk(container);
+      return chars;
+    }
+
+    // Splits `el`'s text into per-character spans, reveals it already
+    // mid-scramble (no flash of the real text first), then staggers each
+    // character settling into place left-to-right. Resolves once the last
+    // character has settled.
+    function decryptReveal(el) {
+      return new Promise((resolve) => {
+        const chars = splitIntoChars(el);
+
+        if (chars.length === 0) {
+          el.style.opacity = '1';
+          resolve();
+          return;
+        }
+
+        chars.forEach((c) => { c.span.textContent = randomGlyph(); });
+
+        requestAnimationFrame(() => {
+          el.style.opacity = '1';
+
+          chars.forEach((c, i) => {
+            const settleAt = i * SETTLE_STEP_MS;
+            const scrambleInterval = setInterval(() => {
+              c.span.textContent = randomGlyph();
+            }, TICK_MS);
+
+            setTimeout(() => {
+              clearInterval(scrambleInterval);
+              c.span.textContent = c.final;
+              if (i === chars.length - 1) resolve();
+            }, settleAt + TICK_MS * 3);
+          });
+        });
+      });
+    }
+
+    const heading = document.getElementById('hero-heading');
+    const subline = document.querySelector('.subline');
+    const form = document.querySelector('.notify-form');
+    const trust = document.querySelector('.trust');
+
+    const sequence = [heading, subline].filter(Boolean);
+
+    sequence
+      .reduce((chain, el) => chain.then(() => decryptReveal(el)), Promise.resolve())
+      .then(() => {
+        if (form) form.classList.add('reveal');
+        if (trust) trust.classList.add('reveal');
+      });
+  })();
   </script>
 
 </body>

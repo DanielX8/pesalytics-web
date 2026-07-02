@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d1812" />
+  <title>Terms of Service — Pesalytics</title>
+  <meta name="description" content="Pesalytics terms of service — subscription pricing, billing, and usage terms for the offline M-PESA budget tracker." />
+  <link rel="icon" type="image/png" href="../logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      oklch(0.10 0.018 145);
+      --surface: oklch(0.14 0.014 145);
+      --green:   #00A651;
+      --ink:     oklch(0.96 0.004 145);
+      --ink-2:   oklch(0.72 0.010 145);
+      --ink-3:   oklch(0.58 0.010 145);
+      --border:  oklch(0.22 0.010 145);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Sora', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 22px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .logo em {
+      font-style: normal;
+      color: var(--green);
+    }
+
+    .logo-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    /* ── Content ── */
+    main {
+      flex: 1;
+      padding: 56px 24px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .page-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-wrap: balance;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--ink-3);
+      margin-bottom: 48px;
+    }
+
+    /* Summary callout */
+    .summary {
+      background: oklch(0.62 0.18 145 / 0.10);
+      border: 1px solid oklch(0.62 0.18 145 / 0.22);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+    }
+
+    .summary p {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.7;
+    }
+
+    .summary strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 44px;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    p {
+      font-size: 14.5px;
+      color: var(--ink-2);
+      line-height: 1.78;
+      margin-bottom: 14px;
+      text-wrap: pretty;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 14px;
+    }
+
+    ul li {
+      font-size: 14.5px;
+      color: var(--ink-2);
+      line-height: 1.7;
+      padding: 4px 0 4px 20px;
+      position: relative;
+    }
+
+    ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 5px;
+      height: 5px;
+      background: var(--green);
+      border-radius: 50%;
+    }
+
+    .perm-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      font-family: 'Courier New', monospace;
+      background: oklch(0.18 0.012 145);
+      padding: 3px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    a {
+      color: var(--green);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    a:hover { opacity: 0.8; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 18px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+
+    footer a {
+      color: var(--ink-3);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    footer a:hover { color: var(--ink-2); }
+
+    @media (max-width: 640px) {
+      header { padding: 18px 20px; }
+      main { padding: 40px 20px 64px; }
+      .summary { padding: 16px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="../">
+      <img src="../logo.png" alt="" aria-hidden="true" class="logo-icon" />
+      <span><em>Pesa</em>lytics</span>
+    </a>
+  </header>
+
+  <main>
+
+    <p class="page-label">Legal</p>
+    <h1>Terms of Service</h1>
+    <p class="meta">Last updated: 2 July 2026</p>
+
+    <div class="summary">
+      <p>
+        <strong>The short version:</strong> Pesalytics is free to use with an optional Premium
+        subscription billed through Google Play. The app parses your M-PESA SMS locally on your
+        device — we don't run servers that touch your financial data. Subscriptions renew
+        automatically unless you cancel through Google Play, and refunds follow Google Play's
+        standard refund policy.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>1. Acceptance of Terms</h2>
+      <p>
+        By downloading, installing, or using Pesalytics, you agree to be bound by these Terms of
+        Service. If you do not agree to these terms, do not use the app.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>2. Description of Service</h2>
+      <p>
+        Pesalytics is an offline-first Android application developed by Daniel Odhiambo. The app
+        reads M-PESA SMS messages locally on your device and parses them into a personal finance
+        dashboard — categorised transactions, spending totals, and trends. There is no
+        server-side processing: Pesalytics does not send your SMS content or financial data to
+        any backend we operate.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>3. Subscription &amp; Pricing</h2>
+      <p>
+        Pesalytics is freemium. Core budgeting and tracking features are free to use indefinitely.
+        A Premium tier is available via Google Play Billing at the following prices:
+      </p>
+      <ul>
+        <li><strong>Monthly</strong> — KES 299 per month</li>
+        <li><strong>Quarterly</strong> — KES 699 per quarter</li>
+        <li><strong>Yearly</strong> — KES 2,000 per year</li>
+        <li><strong>Lifetime</strong> — KES 9,999, one-time payment</li>
+      </ul>
+      <p>
+        A 14-day free Premium trial starts automatically when you grant SMS permission. Recurring
+        subscriptions (monthly, quarterly, yearly) renew automatically at the end of each billing
+        period unless cancelled before the renewal date. The Lifetime option is a single payment
+        and does not renew.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>4. Free Trial &amp; Promotional Codes</h2>
+      <p>
+        The 14-day free trial gives full access to Premium features starting the moment you grant
+        SMS permission. No payment method is required to start the trial. If you do not cancel
+        before the trial ends, Google Play will begin billing you for the subscription plan
+        selected at trial start.
+      </p>
+      <p>
+        From time to time we may offer promotional codes or discounted pricing. These offers are
+        subject to their own terms, eligibility, and expiry dates as stated at the time they're
+        issued, and may be withdrawn or changed without affecting subscribers already on a paid
+        plan.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>5. Cancellation &amp; Refunds</h2>
+      <p>
+        All subscriptions are managed through Google Play, not through Pesalytics directly. To
+        cancel, open the Google Play Store app, go to
+        <strong>Menu &gt; Subscriptions</strong>, select Pesalytics, and cancel. Cancelling stops
+        future renewals; you keep Premium access until the end of the period you already paid for.
+      </p>
+      <p>
+        Refunds are handled entirely by Google Play under their standard refund policy. We do not
+        process refunds directly. See
+        <a href="https://support.google.com/googleplay/answer/2479637" target="_blank" rel="noopener">
+          Google Play's refund policy
+        </a> for eligibility and how to request one. For a plain-language walkthrough of the free
+        trial and what happens after it ends, see our <a href="../faq/">FAQ</a>.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>6. User Responsibilities</h2>
+      <p>
+        Use Pesalytics only for its intended purpose — personal budgeting and expense tracking.
+        Pesalytics is a budgeting aid, not financial or investment advice, and nothing in the app
+        should be treated as a professional recommendation. You are responsible for verifying
+        transaction data shown in the app before making any financial decision based on it.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>7. Intellectual Property</h2>
+      <p>
+        The Pesalytics app, its branding, logo, and in-app content are owned by Daniel Odhiambo.
+        Using the app gives you a personal, non-transferable license to use it on your own
+        devices. You may not copy, redistribute, reverse-engineer, or resell the app or any part
+        of it.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>8. Disclaimer of Warranties / Limitation of Liability</h2>
+      <p>
+        Pesalytics is provided "as is," without warranty of any kind. SMS parsing is
+        automated and, while accurate in the overwhelming majority of cases, is not guaranteed to
+        be 100% error-free — always cross-check important figures against your official M-PESA
+        statements. We are not liable for financial decisions you make based on data shown in the
+        app.
+      </p>
+      <p>
+        Because your data is stored offline on your device and never on our servers, we hold no
+        liability for data loss caused by server failure — there is no server. Data loss from
+        uninstalling the app, clearing app data, or losing your device is your responsibility;
+        export your data regularly if you want a backup. See our
+        <a href="../privacy-policy/">Privacy Policy</a> for how we handle data on your device.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>9. Third-Party Services</h2>
+      <p>
+        Pesalytics uses <strong>Google Play Billing</strong> to process Premium subscription
+        payments. Google's terms govern that transaction:
+        <a href="https://policies.google.com/terms" target="_blank" rel="noopener">policies.google.com/terms</a>.
+        No other third-party SDKs are integrated into the app.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>10. Termination</h2>
+      <p>
+        You may stop using Pesalytics at any time by uninstalling the app from your device. We
+        may suspend or discontinue the service, in whole or in part, at our discretion — where
+        reasonably possible, we'll provide advance notice of any change that materially affects
+        existing users.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>11. Changes to Terms</h2>
+      <p>
+        We may update these terms as the app evolves. The "last updated" date at the top of this
+        page will reflect any revision. Continued use of the app after a change to these terms
+        constitutes acceptance of the updated terms.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>12. Governing Law</h2>
+      <p>
+        These terms are governed by the laws of Kenya, without regard to conflict-of-law
+        principles.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>13. Contact</h2>
+      <p>
+        Questions about these terms? Reach us at
+        <a href="mailto:dleinx8@gmail.com">dleinx8@gmail.com</a>.
+        We aim to respond within 5 business days.
+      </p>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2026 Pesalytics &nbsp;·&nbsp;
+    <a href="../">Home</a> &nbsp;·&nbsp;
+    <a href="../privacy-policy/">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="../faq/">FAQ</a>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d1812" />
+  <title>FAQ — Pesalytics</title>
+  <meta name="description" content="Answers to common questions about Pesalytics — how it reads M-PESA SMS, data privacy, exporting transactions, and Premium pricing." />
+  <link rel="icon" type="image/png" href="../logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      oklch(0.10 0.018 145);
+      --surface: oklch(0.14 0.014 145);
+      --green:   #00A651;
+      --ink:     oklch(0.96 0.004 145);
+      --ink-2:   oklch(0.72 0.010 145);
+      --ink-3:   oklch(0.58 0.010 145);
+      --border:  oklch(0.22 0.010 145);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Sora', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 22px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .logo em {
+      font-style: normal;
+      color: var(--green);
+    }
+
+    .logo-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    /* ── Content ── */
+    main {
+      flex: 1;
+      padding: 56px 24px 80px;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .page-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-wrap: balance;
+    }
+
+    .meta {
+      font-size: 14.5px;
+      color: var(--ink-2);
+      line-height: 1.7;
+      margin-bottom: 48px;
+      max-width: 60ch;
+    }
+
+    a {
+      color: var(--green);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    a:hover { opacity: 0.8; }
+
+    /* ── Accordion ── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    details summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      font-size: 14.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    details summary::-webkit-details-marker { display: none; }
+
+    details summary:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: -2px;
+    }
+
+    .chevron {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      color: var(--ink-3);
+      transition: transform 0.2s ease;
+    }
+
+    details[open] summary .chevron {
+      transform: rotate(180deg);
+      color: var(--green);
+    }
+
+    .faq-answer {
+      padding: 0 20px 20px;
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.75;
+      text-wrap: pretty;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chevron { transition: none; }
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 18px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+
+    footer a {
+      color: var(--ink-3);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    footer a:hover { color: var(--ink-2); }
+
+    @media (max-width: 640px) {
+      header { padding: 18px 20px; }
+      main { padding: 40px 20px 64px; }
+      details summary { padding: 16px 18px; }
+      .faq-answer { padding: 0 18px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="../">
+      <img src="../logo.png" alt="" aria-hidden="true" class="logo-icon" />
+      <span><em>Pesa</em>lytics</span>
+    </a>
+  </header>
+
+  <main>
+
+    <p class="page-label">Support</p>
+    <h1>Frequently Asked Questions</h1>
+    <p class="meta">
+      Everything you need to know about how Pesalytics works, your data, and Premium. Can't find
+      your answer here? Email <a href="mailto:dleinx8@gmail.com">dleinx8@gmail.com</a>.
+    </p>
+
+    <div class="faq-list">
+
+      <details>
+        <summary>
+          How does Pesalytics track my M-Pesa transactions?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Pesalytics securely reads your M-Pesa SMS messages stored locally on your device. It
+          extracts the transaction details like amount, date, and merchant to give you insights
+          without ever connecting to the internet or your bank account.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          Is my financial data safe?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Absolutely. All your data is stored completely offline on your device. We do not use
+          external servers to process or store your transactions. Your privacy is our ultimate
+          premium feature. Full details are in our
+          <a href="../privacy-policy/">Privacy Policy</a>.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          How do I export my data?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          You can export your transaction history at any time by going to Settings &gt; Data
+          Export. You have the option to generate a beautifully formatted PDF report or a CSV
+          file for spreadsheet analysis.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          What happens if I change my phone?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Currently, since all data is stored offline for privacy, you cannot automatically sync
+          data between phones. However, you can export your history as a CSV file to keep your
+          records safe.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          Can I track manual cash transactions?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Yes! You can manually add transactions by pressing the '+' button on the Dashboard.
+          This allows you to track cash income or expenses right alongside your M-Pesa records.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          How are budget thresholds calculated?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Your budget threshold notifications (80% and 100%) are calculated automatically based
+          on your set monthly Global Budget limits against your current month's recorded
+          expenses.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          When is Pesalytics launching, and how do I get it?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Pesalytics is launching soon on Google Play. Drop your email in the notify form on the
+          <a href="../">homepage</a> and we'll let you know the moment it's live.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          What's the difference between the free and Premium tiers?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Core budgeting and transaction tracking is free forever. Premium unlocks the full
+          feature set for KES 299/month, with better value on quarterly and yearly plans, plus a
+          one-time Lifetime option if you'd rather pay once and be done. See our
+          <a href="../terms-of-service/">Terms of Service</a> for full pricing.
+        </p>
+      </details>
+
+      <details>
+        <summary>
+          Is there a free trial for Premium?
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </summary>
+        <p class="faq-answer">
+          Yes — a 14-day free trial starts automatically when you grant SMS permission, no card
+          required upfront. Google Play Billing handles the paid subscription after the trial
+          ends.
+        </p>
+      </details>
+
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2026 Pesalytics &nbsp;·&nbsp;
+    <a href="../">Home</a> &nbsp;·&nbsp;
+    <a href="../privacy-policy/">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="../terms-of-service/">Terms of Service</a>
+  </footer>
+
+</body>
+</html>
