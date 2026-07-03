@@ -114,15 +114,17 @@
       gap: 10px;
     }
 
-    details {
+    .accordion-item {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
     }
 
-    details summary {
-      list-style: none;
+    .accordion-trigger {
+      width: 100%;
+      background: transparent;
+      border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -133,11 +135,11 @@
       font-weight: 600;
       letter-spacing: -0.01em;
       color: var(--ink);
+      font-family: inherit;
+      text-align: left;
     }
 
-    details summary::-webkit-details-marker { display: none; }
-
-    details summary:focus-visible {
+    .accordion-trigger:focus-visible {
       outline: 2px solid var(--green);
       outline-offset: -2px;
     }
@@ -147,12 +149,38 @@
       width: 18px;
       height: 18px;
       color: var(--ink-3);
-      transition: transform 0.2s ease;
+      /* spring animation */
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
     }
 
-    details[open] summary .chevron {
-      transform: rotate(180deg);
+    .accordion-item[data-expanded="true"] .chevron {
+      transform: rotate(90deg);
       color: var(--green);
+    }
+
+    .accordion-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+    }
+
+    .accordion-item[data-expanded="true"] .accordion-content {
+      grid-template-rows: 1fr;
+    }
+
+    .accordion-inner {
+      min-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.7);
+      transform-origin: left center;
+      transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2), 
+                  transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+    }
+
+    .accordion-item[data-expanded="true"] .accordion-inner {
+      opacity: 1;
+      transform: scale(1);
     }
 
     .faq-answer {
@@ -164,7 +192,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .chevron { transition: none; }
+      .chevron, .accordion-content, .accordion-inner { transition: none; }
     }
 
     /* ── Footer ── */
@@ -187,7 +215,7 @@
     @media (max-width: 640px) {
       header { padding: 18px 20px; }
       main { padding: 40px 20px 64px; }
-      details summary { padding: 16px 18px; }
+      .accordion-trigger { padding: 16px 18px; }
       .faq-answer { padding: 0 18px 18px; }
     }
   </style>
@@ -212,131 +240,167 @@
 
     <div class="faq-list">
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           How does Pesalytics track my M-Pesa transactions?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Pesalytics securely reads your M-Pesa SMS messages stored locally on your device. It
-          extracts the transaction details like amount, date, and merchant to give you insights
-          without ever connecting to the internet or your bank account.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Pesalytics securely reads your M-Pesa SMS messages stored locally on your device. It
+              extracts the transaction details like amount, date, and merchant to give you insights
+              without ever connecting to the internet or your bank account.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           Is my financial data safe?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Absolutely. All your data is stored completely offline on your device. We do not use
-          external servers to process or store your transactions. Your privacy is our ultimate
-          premium feature. Full details are in our
-          <a href="../privacy-policy/">Privacy Policy</a>.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Absolutely. All your data is stored completely offline on your device. We do not use
+              external servers to process or store your transactions. Your privacy is our ultimate
+              premium feature. Full details are in our
+              <a href="../privacy-policy/">Privacy Policy</a>.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           How do I export my data?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          You can export your transaction history at any time by going to Settings &gt; Data
-          Export. You have the option to generate a beautifully formatted PDF report or a CSV
-          file for spreadsheet analysis.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              You can export your transaction history at any time by going to Settings &gt; Data
+              Export. You have the option to generate a beautifully formatted PDF report or a CSV
+              file for spreadsheet analysis.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           What happens if I change my phone?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Currently, since all data is stored offline for privacy, you cannot automatically sync
-          data between phones. However, you can export your history as a CSV file to keep your
-          records safe.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Currently, since all data is stored offline for privacy, you cannot automatically sync
+              data between phones. However, you can export your history as a CSV file to keep your
+              records safe.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           Can I track manual cash transactions?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Yes! You can manually add transactions by pressing the '+' button on the Dashboard.
-          This allows you to track cash income or expenses right alongside your M-Pesa records.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Yes! You can manually add transactions by pressing the '+' button on the Dashboard.
+              This allows you to track cash income or expenses right alongside your M-Pesa records.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           How are budget thresholds calculated?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Your budget threshold notifications (80% and 100%) are calculated automatically based
-          on your set monthly Global Budget limits against your current month's recorded
-          expenses.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Your budget threshold notifications (80% and 100%) are calculated automatically based
+              on your set monthly Global Budget limits against your current month's recorded
+              expenses.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           When is Pesalytics launching, and how do I get it?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Pesalytics is launching soon on Google Play. Drop your email in the notify form on the
-          <a href="../">homepage</a> and we'll let you know the moment it's live.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Pesalytics is launching soon on Google Play. Drop your email in the notify form on the
+              <a href="../">homepage</a> and we'll let you know the moment it's live.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           What's the difference between the free and Premium tiers?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Core budgeting and transaction tracking is free forever. Premium unlocks the full
-          feature set for KES 299/month, with better value on quarterly and yearly plans, plus a
-          one-time Lifetime option if you'd rather pay once and be done. See our
-          <a href="../terms-of-service/">Terms of Service</a> for full pricing.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Core budgeting and transaction tracking is free forever. Premium unlocks the full
+              feature set for KES 299/month, with better value on quarterly and yearly plans, plus a
+              one-time Lifetime option if you'd rather pay once and be done. See our
+              <a href="../terms-of-service/">Terms of Service</a> for full pricing.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <details>
-        <summary>
+      <div class="accordion-item" data-expanded="false">
+        <button class="accordion-trigger" aria-expanded="false">
           Is there a free trial for Premium?
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
+            <path d="m9 18 6-6-6-6"/>
           </svg>
-        </summary>
-        <p class="faq-answer">
-          Yes — a 14-day free trial starts automatically when you grant SMS permission, no card
-          required upfront. Google Play Billing handles the paid subscription after the trial
-          ends.
-        </p>
-      </details>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p class="faq-answer">
+              Yes — a 14-day free trial starts automatically when you grant SMS permission, no card
+              required upfront. Google Play Billing handles the paid subscription after the trial
+              ends.
+            </p>
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -349,5 +413,20 @@
     <a href="../terms-of-service/">Terms of Service</a>
   </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const triggers = document.querySelectorAll('.accordion-trigger');
+      
+      triggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          const item = trigger.closest('.accordion-item');
+          const isExpanded = item.getAttribute('data-expanded') === 'true';
+          
+          item.setAttribute('data-expanded', !isExpanded);
+          trigger.setAttribute('aria-expanded', !isExpanded);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
